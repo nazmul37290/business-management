@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -23,7 +23,8 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation} from 'react-router-dom'
+import { UserContext } from '../provider/Context'
 
 
 const teams = [
@@ -31,15 +32,12 @@ const teams = [
   { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
   { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
 ]
-const userNavigation = [
-  { name: 'Your profile', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 const Layout = () => {
+    const {setUser}= useContext(UserContext);
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const location=useLocation();
     const [navigation, setNavigation] = useState([
@@ -59,6 +57,10 @@ const Layout = () => {
           }))
         );
       }, [location.pathname]);
+
+      const handleLogout = () => {
+        setUser(false);
+      }
     return (
         <>
         <div>
@@ -279,16 +281,27 @@ const Layout = () => {
                       transition
                       className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                     >
-                      {userNavigation.map((item) => (
-                        <MenuItem key={item.name}>
+                      
+                        
+
+                        <MenuItem >
+                          <a
+                            onClick={handleLogout}
+                            className="block px-3 py-1 text-sm leading-6 text-gray-900 data-[focus]:bg-gray-50"
+                          >
+                            logout
+                          </a>
+                        </MenuItem>
+                        
+                        {/* <MenuItem key={item.name}>
                           <a
                             href={item.href}
                             className="block px-3 py-1 text-sm leading-6 text-gray-900 data-[focus]:bg-gray-50"
                           >
                             {item.name}
                           </a>
-                        </MenuItem>
-                      ))}
+                        </MenuItem> */}
+                     
                     </MenuItems>
                   </Menu>
                 </div>
