@@ -1,14 +1,17 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../provider/Context";
+import axios from "axios";
 
 
 const Login = () => {
-    const {setUser}=useContext(UserContext);
-    const navigate= useNavigate(null)
-    const handleLogin=() => {
-        setUser(true);
-        navigate("/");
+    // const {setUser}=useContext(UserContext);
+    // const navigate= useNavigate(null)
+    const handleLogin= async () => {
+      axios.post('http://localhost:3000/login', {name:"nazmul"})
+      .then(res=>console.log(res.data))
+        // setUser(true);
+        // navigate("/");
     }
     return (
         <>
@@ -25,7 +28,7 @@ const Login = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
                 Email address
