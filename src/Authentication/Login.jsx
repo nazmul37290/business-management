@@ -1,17 +1,32 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../provider/Context";
 import axios from "axios";
 
 
 const Login = () => {
-    // const {setUser}=useContext(UserContext);
-    // const navigate= useNavigate(null)
-    const handleLogin= async () => {
-      axios.post('http://localhost:3000/login', {name:"nazmul"})
-      .then(res=>console.log(res.data))
-        // setUser(true);
-        // navigate("/");
+  const [error,setError]=useState(null)
+    const {setUser}=useContext(UserContext);
+    const navigate= useNavigate(null)
+    const handleLogin= async (e) => {
+      e.preventDefault();
+      const form=e.target
+      const username=form.name.value;
+      const password=form.password.value;
+      const user={username,password}
+      console.log(user)  
+      axios.post('http://localhost:3000/login', user)
+      .then(res=>{
+        console.log(res.data)
+        if(res.data.userFound){
+        setUser(true);
+        navigate("/");
+      }
+      else{
+        setError('your username or password is incorrect')
+      }
+    })
+       
     }
     return (
         <>
@@ -28,18 +43,18 @@ const Login = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6">
+          <form onSubmit={handleLogin} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
                 Email address
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
+                  id="name"
+                  name="name"
+                  type="text"
                   required
-                  autoComplete="email"
+                  autoComplete="name"
                   className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -66,10 +81,11 @@ const Login = () => {
                   className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                 />
               </div>
+              
+              {error && <div className="text-red-500 text-xs">{error}</div>  }
             </div>
-
             <div>
-              <button onClick={handleLogin}
+              <button 
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
               >
