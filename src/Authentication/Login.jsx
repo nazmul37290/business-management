@@ -14,12 +14,10 @@ const Login = () => {
       const username=form.name.value;
       const password=form.password.value;
       const user={username,password}
-      console.log(user)  
       axios.post('http://localhost:3000/login', user)
       .then(res=>{
-        console.log(res.data)
         if(res.data.userFound){
-        setUser(true);
+        setUser(...res.data.result);
         navigate("/");
       }
       else{

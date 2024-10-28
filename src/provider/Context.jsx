@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export const UserContext = createContext();
 const Context = ({ children }) => {
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(null);
 
   const userInfo = {
     user,

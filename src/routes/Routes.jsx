@@ -16,6 +16,10 @@ const Routes= createBrowserRouter([
         </CheckUser>,
         children:[
             {
+                path:"/",
+                element:<QuickSell></QuickSell>
+            },
+            {
                 path:"/quickSell",
                 element:<QuickSell></QuickSell>
             }
